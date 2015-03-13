@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'maven'
+
+jar {
+    baseName = 'gnugo-wrapper'
+    version = '2.2'
+    from sourceSets.main.allJava
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.groupId = 'org.rmaftei'
+        pom.artifactId = 'gnugo-wrapper'
+        pom.version = '2.2'
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+task cleanIdeBuildDirs {
+    file('out').deleteDir() // intellij
+    file('bin').deleteDir() // eclipse
+}
+
+clean.doLast {
+    cleanIdeBuildDirs
+}
+
+dependencies {
+    compile 'org.rmaftei:gnugo-parser:1.1'
+    compile 'org.codehaus.groovy:groovy-all:2.2.0'
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
